@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 # shareable_constant_value: experimental_everything
 
+require 'envutil'
+
 class Net::IMAP::FakeServer
 
   # NOTE: The API is experimental and may change without deprecation or warning.
@@ -11,8 +13,12 @@ class Net::IMAP::FakeServer
     SERVER_CERT = File.expand_path("../../fixtures/server.crt", __dir__)
 
     DEFAULTS = {
-      hostname: "localhost", port: 0,
-      timeout: 10, connect_timeout: 2, read_timeout: 2, write_timeout: 2,
+      hostname: "localhost",
+      port: 0,
+      timeout: EnvUtil.apply_timeout_scale(10),
+      connect_timeout: EnvUtil.apply_timeout_scale(2),
+      read_timeout: EnvUtil.apply_timeout_scale(2),
+      write_timeout: EnvUtil.apply_timeout_scale(2),
 
       implicit_tls: false,
       starttls: true,

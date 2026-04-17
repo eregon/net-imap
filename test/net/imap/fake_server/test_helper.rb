@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "../fake_server"
+require 'envutil'
 
 module Net::IMAP::FakeServer::TestHelper
 
@@ -15,7 +16,7 @@ module Net::IMAP::FakeServer::TestHelper
 
   def run_fake_server_in_thread(ignore_io_error: false,
                                 report_on_exception: true,
-                                timeout: 10, **opts)
+                                timeout: EnvUtil.apply_timeout_scale(10), **opts)
     Timeout.timeout(timeout) do
       server = Net::IMAP::FakeServer.new(timeout: timeout, **opts)
       @threads << Thread.new do
